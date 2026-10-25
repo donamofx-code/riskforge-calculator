@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d16">
+<title>RiskForge — Trading Risk Calculator</title>
+<style>
+:root{--bg:#080d16;--panel:#101827;--panel2:#0c1320;--line:#243249;--text:#f3f6fb;--muted:#91a0b7;--blue:#3b82f6;--blue2:#60a5fa;--red:#f05262;--green:#34d399;--gold:#fbbf24}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#122544 0,transparent 38%),radial-gradient(ellipse at 100% 20%,#25111d 0,transparent 28%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+.wrap{max-width:1160px;margin:auto;padding:24px 18px 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--blue),#1e40af);display:grid;place-items:center;font-weight:900;font-size:20px;box-shadow:0 8px 30px #2563eb40}.brand h1{font-size:18px;letter-spacing:.08em;margin:0}.brand p{margin:4px 0 0;color:var(--muted);font-size:11px;letter-spacing:.14em}.pill{border:1px solid #285b48;color:#72e7ba;background:#0d211e;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.hero{margin-bottom:24px}.eyebrow{color:var(--blue2);font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.hero h2{font-size:clamp(28px,5vw,46px);line-height:1.08;letter-spacing:-.04em;margin:10px 0 12px;max-width:760px}.hero h2 span{color:var(--blue2)}.hero p{color:var(--muted);max-width:700px;line-height:1.65;margin:0;font-size:14px}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:18px;align-items:start}.panel{background:linear-gradient(160deg,#111b2c,#0c1320);border:1px solid var(--line);border-radius:18px;padding:21px;box-shadow:0 14px 50px #0002}.panelhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.panelhead h3{font-size:15px;margin:0}.step{font-size:10px;color:var(--muted);letter-spacing:.12em}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;color:#b7c4d7;font-size:12px;font-weight:650;margin:0 0 7px}.help{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.45}input,select{width:100%;border:1px solid #2a3950;background:#080f1c;color:var(--text);border-radius:10px;padding:12px 12px;font:inherit;font-size:14px;outline:none;min-height:44px}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3b82f625}input[readonly]{color:#9fb2cc;background:#0b1422}.unitrow{display:flex;gap:8px}.unitrow>*{flex:1;min-width:0}.sectionlabel{grid-column:1/-1;color:var(--blue2);font-size:10px;font-weight:800;letter-spacing:.15em;padding-top:4px;border-bottom:1px solid var(--line);padding-bottom:8px}.buttonrow{display:flex;gap:10px;margin-top:18px}.btn{border:0;border-radius:11px;padding:13px 16px;font-weight:800;font-size:13px;cursor:pointer}.primary{color:white;background:linear-gradient(135deg,#3b82f6,#1d4ed8);flex:1;box-shadow:0 8px 25px #2563eb35}.secondary{color:#d4deed;background:#182438;border:1px solid #2c3d55}.results{position:sticky;top:16px}.resultHero{border:1px solid #25436e;background:linear-gradient(135deg,#112746,#0c1728);border-radius:15px;padding:18px;margin-bottom:14px}.resultHero .small{font-size:11px;color:#b4c9e8}.bigmoney{font-size:clamp(28px,4vw,38px);font-weight:850;letter-spacing:-.04em;margin:7px 0}.submoney{font-size:12px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{border:1px solid var(--line);border-radius:13px;background:#0a1220;padding:14px;min-width:0}.metric .label{font-size:11px;color:var(--muted);margin-bottom:8px}.metric .value{font-size:20px;font-weight:800;overflow-wrap:anywhere}.metric .note{font-size:10px;color:var(--muted);margin-top:6px}.red{color:#ff7784}.green{color:#64e5b3}.blue{color:#7db4ff}.tradelevels{margin-top:14px;border:1px solid var(--line);border-radius:13px;overflow:hidden}.tradelevels .row{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px}.tradelevels .row:last-child{border-bottom:0}.tradelevels .row span:first-child{color:var(--muted)}.tradelevels .row strong{text-align:right;overflow-wrap:anywhere}.notice{margin-top:14px;border-left:3px solid var(--gold);background:#241e10;color:#d7c9a7;padding:12px 13px;border-radius:0 10px 10px 0;font-size:11px;line-height:1.6}.footnote{font-size:11px;color:var(--muted);line-height:1.7;margin-top:20px}.footnote strong{color:#d9e4f4}.hidden{display:none!important}.mini{font-size:10px;color:var(--muted);line-height:1.5}
+@media(max-width:800px){.wrap{padding:17px 13px 34px}.layout{grid-template-columns:1fr}.results{position:static}.panel{padding:16px}.top{margin-bottom:24px}.pill{font-size:10px}.hero h2{font-size:32px}}
+@media(max-width:420px){.fields{grid-template-columns:1fr}.field.full,.sectionlabel{grid-column:auto}.metrics{gap:8px}.metric{padding:12px}.metric .value{font-size:18px}.brand h1{font-size:15px}.pill{padding:7px 8px}.buttonrow{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><div class="logo">R</div><div><h1>RISKFORGE</h1><p>TRADING RISK CALCULATOR</p></div></div>
+  <div class="pill">● LOCAL CALCULATION</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Plan the risk. Trade the plan.</div>
+  <h2>Hitung risiko sebelum<br><span>masuk market.</span></h2>
+  <p>Kalkulator posisi untuk Forex, XAUUSD, NASDAQ, dan NQ100. Masukkan harga Entry, Stop Loss, dan target RR untuk menghitung ukuran posisi serta estimasi hasil berdasarkan spesifikasi kontrak yang kamu gunakan.</p>
+</section>
+<div class="layout">
+<section class="panel">
+  <div class="panelhead"><h3>Pengaturan Trading</h3><span class="step">01 / INPUT</span></div>
+  <div class="fields">
+    <div class="field"><label for="instrument">Instrumen</label><select id="instrument">
+      <option value="forex">Forex Pair</option><option value="gold">XAUUSD · Gold</option><option value="nasdaq">NASDAQ · CFD</option><option value="nq">NQ100 · Futures/CFD</option>
+    </select></div>
+    <div class="field"><label for="symbol">Simbol</label><select id="symbol">
+      <option>EURUSD</option><option>GBPUSD</option><option>USDJPY</option><option>AUDUSD</option><option>NZDUSD</option><option>USDCAD</option><option>USDCHF</option><option>EURJPY</option><option>GBPJPY</option><option>XAUUSD</option><option>NAS100</option><option>US100</option><option>NQ100</option><option>Custom</option>
+    </select></div>
+    <div class="field"><label for="direction">Arah posisi</label><select id="direction"><option value="buy">BUY / LONG</option><option value="sell">SELL / SHORT</option></select></div>
+    <div class="field"><label for="balance">Balance akun (USD)</label><input id="balance" type="number" min="0" step="any" value="10000"></div>
+    <div class="field"><label for="riskMode">Metode risiko</label><select id="riskMode"><option value="percent">Persentase balance</option><option value="cash">Nominal USD</option></select></div>
+    <div class="field"><label for="risk">Risiko per trade (%)</label><input id="risk" type="number" min="0" step="any" value="1"></div>
+    <div class="field hidden" id="cashField"><label for="riskCash">Nominal risiko (USD)</label><input id="riskCash" type="number" min="0" step="any" value="100"></div>
+    <div class="field"><label for="entry">Harga Entry</label><input id="entry" type="number" step="any" value="1.08500"></div>
+    <div class="field"><label for="sl">Harga Stop Loss</label><input id="sl" type="number" step="any" value="1.08200"></div>
+    <div class="field"><label for="rr">Target Risk : Reward</label><select id="rr"><option value="1">1 : 1</option><option value="1.5">1 : 1.5</option><option value="2" selected>1 : 2</option><option value="3">1 : 3</option><option value="4">1 : 4</option><option value="5">1 : 5</option></select><div class="help">TP dihitung otomatis dari Entry dan jarak SL.</div></div>
+    <div class="field"><label for="tp">Harga Take Profit (otomatis)</label><input id="tp" type="number" step="any" readonly></div>
+    <div class="sectionlabel">SPESIFIKASI KONTRAK BROKER</div>
+    <div class="field"><label for="pipSize">Ukuran 1 pip / point harga</label><input id="pipSize" type="number" min="0.00000001" step="any" value="0.0001"><div class="help">Forex umumnya 0.0001; pasangan JPY umumnya 0.01. Gold/indeks mengikuti definisi point yang kamu pakai.</div></div>
+    <div class="field"><label for="valuePerUnit">Nilai 1 pip / point per 1 lot (USD)</label><input id="valuePerUnit" type="number" min="0.00000001" step="any" value="10"><div class="help">Masukkan nilai USD per pip/point untuk 1 lot sesuai broker.</div></div>
+    <div class="field"><label for="lotStep">Lot step / increment</label><select id="lotStep"><option value="0.01" selected>0.01 lot</option><option value="0.1">0.10 lot</option><option value="1">1.00 lot</option><option value="0.001">0.001 lot</option></select></div>
+    <div class="field"><label for="maxLot">Batas maksimum lot (opsional)</label><input id="maxLot" type="number" min="0" step="any" placeholder="Kosong = tanpa batas"></div>
+  </div>
+  <div class="buttonrow"><button class="btn primary" id="calc">Hitung Risiko ↗</button><button class="btn secondary" id="reset">Reset</button></div>
+  <p class="mini">Semua kalkulasi berjalan di browser ini. Tidak ada login broker dan data tidak dikirim ke server.</p>
+</section>
+<section class="panel results">
+  <div class="panelhead"><h3>Hasil Perhitungan</h3><span class="step">02 / RESULTS</span></div>
+  <div class="resultHero"><div class="small">Risiko yang direncanakan</div><div class="bigmoney" id="riskOut">$100.00</div><div class="submoney" id="riskPctOut">1.00% dari balance</div></div>
+  <div class="metrics">
+    <div class="metric"><div class="label">UKURAN POSISI</div><div class="value blue" id="lotOut">0.33 lot</div><div class="note">Setelah pembulatan lot step</div></div>
+    <div class="metric"><div class="label">RISK : REWARD</div><div class="value" id="rrOut">1 : 2</div><div class="note">Target RR pilihan</div></div>
+    <div class="metric"><div class="label">JARAK STOP LOSS</div><div class="value red" id="slDistOut">30.0 pips</div><div class="note" id="slDistNote">Entry ke SL</div></div>
+    <div class="metric"><div class="label">JARAK TAKE PROFIT</div><div class="value green" id="tpDistOut">60.0 pips</div><div class="note">Entry ke TP</div></div>
+    <div class="metric"><div class="label">ESTIMASI LOSS</div><div class="value red" id="lossOut">−$99.00</div><div class="note">Perkiraan setelah pembulatan lot</div></div>
+    <div class="metric"><div class="label">ESTIMASI PROFIT</div><div class="value green" id="profitOut">+$198.00</div><div class="note">Sebelum komisi, swap, slippage</div></div>
+  </div>
+  <div class="tradelevels">
+    <div class="row"><span>Entry</span><strong id="entryOut">1.08500</strong></div>
+    <div class="row"><span>Stop Loss</span><strong class="red" id="slOut">1.08200</strong></div>
+    <div class="row"><span>Take Profit</span><strong class="green" id="tpOut">1.09100</strong></div>
+    <div class="row"><span>Risiko aktual setelah pembulatan</span><strong id="actualRiskOut">$99.00</strong></div>
+    <div class="row"><span>Nilai 1 pip/point untuk posisi</span><strong id="positionValueOut">$3.30 / pip</strong></div>
+  </div>
+  <div class="notice" id="warning">Penting: sesuaikan nilai pip/point per lot dengan spesifikasi kontrak broker. Hasil ini adalah estimasi, bukan jaminan harga eksekusi.</div>
+</section>
+</div>
+<div class="footnote"><strong>Catatan:</strong> Kalkulator ini tidak terhubung ke broker dan tidak mengambil harga live. Nilai pip/point per lot berbeda menurut simbol, mata uang quote, ukuran kontrak, jenis CFD/futures, dan broker. Untuk USDJPY, cross pair, XAUUSD, NASDAQ, dan NQ100, verifikasi spesifikasi kontrak di platform broker lalu masukkan nilai yang benar. Komisi, spread, swap, slippage, margin dan konversi mata uang belum dimasukkan.</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>Number.parseFloat($(id).value);
+const fmt=(n,d=2)=>Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const money=n=>(n<0?'−':'')+'$'+fmt(Math.abs(n),2);
+function setDefaults(){
+ const ins=$('instrument').value, sym=$('symbol').value;
+ if(ins==='forex'){
+   $('pipSize').value=(sym.endsWith('JPY')||sym==='EURJPY'||sym==='GBPJPY')?'0.01':'0.0001';
+   $('valuePerUnit').value=(sym==='USDJPY'||sym==='EURJPY'||sym==='GBPJPY'||sym==='USDCAD'||sym==='USDCHF')?'9.5':'10';
+ } else if(ins==='gold'){ $('symbol').value='XAUUSD';$('pipSize').value='0.01';$('valuePerUnit').value='1';}
+ else if(ins==='nasdaq'){if(!['NAS100','US100'].includes(sym))$('symbol').value='NAS100';$('pipSize').value='1';$('valuePerUnit').value='1';}
+ else {if(sym!=='NQ100')$('symbol').value='NQ100';$('pipSize').value='1';$('valuePerUnit').value='20';}
+}
+function calc(){
+ const entry=num('entry'),sl=num('sl'),bal=num('balance'),riskInput=num('risk'),pip=num('pipSize'),value=num('valuePerUnit'),rr=Number($('rr').value),step=Number($('lotStep').value),maxLot=num('maxLot');
+ const dir=$('direction').value,valid=Number.isFinite(entry)&&Number.isFinite(sl)&&entry>0&&sl>0&&entry!==sl;
+ if(!valid){$('warning').textContent='Periksa harga Entry dan Stop Loss. Keduanya harus lebih besar dari nol dan tidak boleh sama.';return;}
+ const correct=(dir==='buy'&&sl<entry)||(dir==='sell'&&sl>entry);
+ if(!correct){$('warning').textContent='Arah posisi dan Stop Loss tidak sesuai. BUY biasanya SL di bawah Entry; SELL biasanya SL di atas Entry.';return;}
+ if(!(pip>0&&value>0&&step>0)){ $('warning').textContent='Ukuran pip/point, nilai per pip/point, dan lot step harus lebih besar dari nol.';return;}
+ const riskCash=$('riskMode').value==='cash'?num('riskCash'):bal*riskInput/100;
+ if(!(riskCash>0&&bal>=0)){ $('warning').textContent='Masukkan balance dan nominal/persentase risiko yang valid.';return;}
+ const slPriceDist=Math.abs(entry-sl),slUnits=slPriceDist/pip,tpPriceDist=slPriceDist*rr,tp=dir==='buy'?entry+tpPriceDist:entry-tpPriceDist;
+ const rawLot=riskCash/(slUnits*value),roundLot=Math.floor((rawLot+1e-10)/step)*step;
+ const lot=Number.isFinite(maxLot)&&maxLot>0?Math.min(roundLot,Math.floor(maxLot/step)*step):roundLot;
+ const actualRisk=lot*slUnits*value,profit=lot*(tpPriceDist/pip)*value;
+ $('tp').value=tp.toFixed(Math.max(2,decimalPlaces(entry),decimalPlaces(pip)));
+ $('riskOut').textContent=money(riskCash);$('riskPctOut').textContent=(bal>0?fmt(riskCash/bal*100,2)+'% dari balance':'Nominal risiko yang dipilih');
+ $('lotOut').textContent=fmt(lot,Math.max(2,decimalPlaces(step)))+' lot';
+ $('rrOut').textContent='1 : '+fmt(rr,rr%1?1:0);
+ $('slDistOut').textContent=fmt(slUnits,slUnits%1?1:0)+' pips/points';
+ $('tpDistOut').textContent=fmt(tpPriceDist/pip,(tpPriceDist/pip)%1?1:0)+' pips/points';
+ $('lossOut').textContent='−'+money(actualRisk);$('profitOut').textContent='+'+money(profit);
+ $('entryOut').textContent=fmt(entry,decimalPlaces(entry));$('slOut').textContent=fmt(sl,decimalPlaces(sl));$('tpOut').textContent=fmt(tp,Math.max(decimalPlaces(entry),decimalPlaces(pip)));
+ $('actualRiskOut').textContent=money(actualRisk);$('positionValueOut').textContent=money(lot*value)+' / pip/point';
+ $('warning').textContent=lot<=0?'Ukuran posisi hasil hitung lebih kecil dari minimum lot step. Turunkan risiko atau sesuaikan spesifikasi kontrak.':(Number.isFinite(maxLot)&&maxLot>0&&lot<roundLot?'Lot dibatasi oleh batas maksimum yang kamu masukkan. Risiko aktual bisa lebih kecil dari target.':'Estimasi belum termasuk komisi, spread, swap, slippage, margin, atau konversi mata uang. Pastikan nilai pip/point per lot sesuai spesifikasi broker.');
+}
+function decimalPlaces(n){const s=String(n);return s.includes('.')?Math.min(8,s.split('.')[1].length):0;}
+$('instrument').addEventListener('change',()=>{setDefaults();calc()});
+$('symbol').addEventListener('change',()=>{const s=$('symbol').value;if(s==='XAUUSD'){$('instrument').value='gold';}else if(['NAS100','US100'].includes(s)){$('instrument').value='nasdaq';}else if(s==='NQ100'){$('instrument').value='nq';}else{$('instrument').value='forex';}setDefaults();calc()});
+$('riskMode').addEventListener('change',()=>{$('cashField').classList.toggle('hidden',$('riskMode').value!=='cash');$('risk').parentElement.classList.toggle('hidden',$('riskMode').value==='cash');calc()});
+$('calc').addEventListener('click',calc);
+$('reset').addEventListener('click',()=>{ $('instrument').value='forex';$('symbol').value='EURUSD';$('direction').value='buy';$('balance').value='10000';$('riskMode').value='percent';$('risk').value='1';$('riskCash').value='100';$('entry').value='1.08500';$('sl').value='1.08200';$('rr').value='2';$('lotStep').value='0.01';$('maxLot').value='';$('cashField').classList.add('hidden');$('risk').parentElement.classList.remove('hidden');setDefaults();calc();});
+['direction','balance','risk','riskCash','entry','sl','rr','pipSize','valuePerUnit','lotStep','maxLot'].forEach(id=>$(id).addEventListener('input',calc));
+setDefaults();calc();
+</script>
+</body>
+</html>
